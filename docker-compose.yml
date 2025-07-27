@@ -1,0 +1,20 @@
+
+services:
+  sqlserver:
+    image: mcr.microsoft.com/azure-sql-edge
+    container_name: sqslserver-nightvibe
+    environment:
+      SA_PASSWORD: "TheSecure!Pass123"
+      ACCEPT_EULA: "Y"
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqlvolume:/var/opt/msql
+    networks:
+      - nightvibe-net
+volumes:
+  sqlvolume:
+
+networks:
+  nightvibe-net:
+    driver: bridge
