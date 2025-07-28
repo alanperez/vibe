@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using NightVibe.API.Features.Events.Models;
 
 namespace NightVibe.API.Features.Events.Models;
 
@@ -15,5 +16,8 @@ public class Event
     public double Longitude { get; set; }
     public DateTime DateTime { get; set; } // When it's happening
     public string ImageUrl { get; set; } // URL to a thumbnail or flyer image
+
+    public int VenueId { get; set; }
+    public Venue Venue { get; set; }
 
 }
