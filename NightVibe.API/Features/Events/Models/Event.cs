@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
-using NightVibe.API.Features.Events.Models;
+using NightVibe.API.Features.Venues.Models;
+
 
 namespace NightVibe.API.Features.Events.Models;
 
