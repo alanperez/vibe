@@ -1,4 +1,5 @@
 // Bootstraps the web app, pulls in the config files, logging, etc.
+using Microsoft.AspNetCore.Components.Web;
 using Microsoft.EntityFrameworkCore;
 using NightVibe.API.Data;
 using NightVibe.API.Features.Events.Repositories;
@@ -21,7 +22,10 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddEndpointsApiExplorer();
 
 // Registers Swagger UI to test API visually
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new() { Title = "NightVibe API", Version = "v1" });
+});
 
 // Builds the web app with all registered services and middleware
 var app = builder.Build();
