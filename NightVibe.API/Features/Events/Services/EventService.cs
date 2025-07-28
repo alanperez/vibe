@@ -27,7 +27,9 @@ public class EventService : IEventService
             Id = e.Id,
             Title = e.Title,
             Genre = e.Genre,
-            Location = e.Location,
+            Address = e.Address,
+            Longitude = e.Longitude,
+            Latitude = e.Latitude,
             DateTime = e.DateTime,
             ImageUrl = e.ImageUrl
         });
@@ -43,7 +45,9 @@ public class EventService : IEventService
             Id = ev.Id,
             Title = ev.Title,
             Genre = ev.Genre,
-            Location = ev.Location,
+            Address = ev.Address,
+            Longitude = ev.Longitude,
+            Latitude = ev.Latitude,
             DateTime = ev.DateTime,
             ImageUrl = ev.ImageUrl
         };
@@ -56,7 +60,9 @@ public class EventService : IEventService
         {
             Title = dto.Title,
             Genre = dto.Genre,
-            Location = dto.Location,
+            Address = dto.Address,
+            Longitude = dto.Longitude,
+            Latitude = dto.Latitude,
             DateTime = dto.DateTime,
             ImageUrl = dto.ImageUrl
         };

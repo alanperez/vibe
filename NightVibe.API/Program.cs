@@ -24,15 +24,23 @@ builder.Services.AddSwaggerGen();
 // Builds the web app with all registered services and middleware
 var app = builder.Build();
 
-// Enable Swagger only during development
-if (app.Environment.IsDevelopment())
+// Apply migrations and seed the database
+using (var scope = app.Services.CreateScope())
 {
-    // Generates Swagger JSON
-    app.UseSwagger();
-
-    // Enables Swagger UI
-    app.UseSwaggerUI();
+    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    db.Database.Migrate(); // applies any pending migrations
+    DbSeeder.Seed(db); // seed if empty
 }
+
+    // Enable Swagger only during development
+    if (app.Environment.IsDevelopment())
+    {
+        // Generates Swagger JSON
+        app.UseSwagger();
+
+        // Enables Swagger UI
+        app.UseSwaggerUI();
+    }
 
 // Redirect HTTP to HTTPS
 app.UseHttpsRedirection();
@@ -42,6 +50,19 @@ app.UseAuthorization();
 
 // map route requests to controler endpoints
 app.MapControllers();
+
+
+if (args.Contains("--seed"))
+{
+    using var scope = app.Services.CreateScope();
+    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    db.Database.Migrate();
+    DbSeeder.Seed(db);
+
+    Console.WriteLine("Database seeded successfully.");
+
+    return;
+}
 
 // starts the app and listens for the HTTP requests
 app.Run();
