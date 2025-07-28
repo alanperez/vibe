@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using NightVibe.API.Features.Events.Models;
-using NitghtVibe.API.Features.Events.Models;
+using NightVibe.API.Features.Venues.Models;
 
 namespace NightVibe.API.Data;
 
