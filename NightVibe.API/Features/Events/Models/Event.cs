@@ -17,7 +17,10 @@ public class Event
     public DateTime DateTime { get; set; } // When it's happening
     public string ImageUrl { get; set; } // URL to a thumbnail or flyer image
 
-    public int VenueId { get; set; }
+
+    // Foreign Key + Navigation
+    // ties Event to physical Venue object
+    public Guid VenueId { get; set; }
     public Venue Venue { get; set; }
 
 }
