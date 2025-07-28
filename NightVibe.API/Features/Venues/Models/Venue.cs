@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using NightVibe.API.Features.Events.Models;
 
-namespace NightVibe.API.Features.Events.Models;
+namespace NightVibe.API.Features.Venues.Models;
 
 public class Venue
 {
