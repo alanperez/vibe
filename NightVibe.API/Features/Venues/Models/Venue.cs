@@ -1,16 +1,27 @@
+using System.ComponentModel.DataAnnotations;
 using NightVibe.API.Features.Events.Models;
 
-namespace NitghtVibe.API.Features.Events.Models;
+namespace NightVibe.API.Features.Events.Models;
 
 public class Venue
 {
-    public int Id { get; set; }
-    public string Name { get; set; }
-    public string Description { get; set; }
-    public string Address { get; set; }
-    public double Latitude { get; set; }
-    public double Longitude { get; set; }
-    public DateTime DateTime { get; set; }
+        public Guid Id { get; set; }
 
-    public ICollection<Event> Events { get; set; }
+        [Required]
+        [MaxLength(100)]
+        public string Name { get; set; }
+
+        [Required]
+        public string Address { get; set; }
+
+        public double Latitude { get; set; }
+
+        public double Longitude { get; set; }
+
+        public string? Description { get; set; }
+
+        public string? ImageUrl { get; set; }
+
+        // Navigation property (1 venue has many events)
+        public ICollection<Event> Events { get; set; } = new List<Event>();
 }
