@@ -1,41 +1,68 @@
+// Bootstraps the web app, pulls in the config files, logging, etc.
+using Microsoft.EntityFrameworkCore;
+using NightVibe.API.Data;
+using NightVibe.API.Features.Events.Repositories;
+using NightVibe.API.Features.Events.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddOpenApi();
+// Register services
+builder.Services.AddControllers();
+builder.Services.AddScoped<IEventService, EventService>();
+builder.Services.AddScoped<IEventRepository, EventRepository>();
 
+// Registers the AppDbContext so EF Core can communicate with SQL Server using the connection string from AppSettings.
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+// Enables API endpoint discovery for Swagger
+builder.Services.AddEndpointsApiExplorer();
+
+// Registers Swagger UI to test API visually
+builder.Services.AddSwaggerGen();
+
+// Builds the web app with all registered services and middleware
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+// Apply migrations and seed the database
+using (var scope = app.Services.CreateScope())
 {
-    app.MapOpenApi();
+    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    db.Database.Migrate(); // applies any pending migrations
+    DbSeeder.Seed(db); // seed if empty
 }
 
+    // Enable Swagger only during development
+    if (app.Environment.IsDevelopment())
+    {
+        // Generates Swagger JSON
+        app.UseSwagger();
+
+        // Enables Swagger UI
+        app.UseSwaggerUI();
+    }
+
+// Redirect HTTP to HTTPS
 app.UseHttpsRedirection();
 
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
+// Enables roles/permission checking
+app.UseAuthorization();
 
-app.MapGet("/weatherforecast", () =>
-{
-    var forecast =  Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-})
-.WithName("GetWeatherForecast");
+// map route requests to controler endpoints
+app.MapControllers();
 
-app.Run();
 
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
+if (args.Contains("--seed"))
 {
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
+    using var scope = app.Services.CreateScope();
+    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    db.Database.Migrate();
+    DbSeeder.Seed(db);
+
+    Console.WriteLine("Database seeded successfully.");
+
+    return;
 }
+
+// starts the app and listens for the HTTP requests
+app.Run();
