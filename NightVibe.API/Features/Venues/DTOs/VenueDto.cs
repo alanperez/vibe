@@ -1,3 +1,5 @@
+using NightVibe.API.Features.Neighborhoods.DTOs;
+
 namespace NightVibe.API.Features.Venues.DTOs;
 
 public class VenueDto
@@ -9,6 +11,7 @@ public class VenueDto
     public double Latitude { get; set; }
     public double Longitude { get; set; }
 
-     public string? ImageUrl { get; set; }
+    public string? ImageUrl { get; set; }
 
+    public NeighborhoodDto? Neighborhood { get; set; }
 }

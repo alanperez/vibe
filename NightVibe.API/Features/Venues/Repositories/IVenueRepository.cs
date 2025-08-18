@@ -7,4 +7,7 @@ public interface IVenueRepository
 {
     Task<IEnumerable<Venue>> GetAllAsync();
     Task<Venue> CreateAsync(Venue venue);
+
+    Task<IEnumerable<Venue>> GetVenuesByNeighborhoodSlugAsync(string slug);
+    Task<Venue?> GetByIdAsync(Guid id);
 }

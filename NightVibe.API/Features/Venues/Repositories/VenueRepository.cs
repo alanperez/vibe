@@ -24,4 +24,16 @@ public class VenueRepository : IVenueRepository
         return venue;
     }
 
+    public async Task<IEnumerable<Venue>> GetVenuesByNeighborhoodSlugAsync(string slug)
+    {
+        return await _context.Venues
+            .Include(v => v.Neighborhood) 
+            .Where(v => v.Neighborhood != null && v.Neighborhood.Slug == slug)
+            .ToListAsync();
+    }
+    public async Task<Venue?> GetByIdAsync(Guid id) {
+
+        return await _context.Venues.Include(v => v.Neighborhood).FirstOrDefaultAsync(v => v.Id == id);
+    }
+
 }

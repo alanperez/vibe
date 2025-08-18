@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using NightVibe.API.Features.Events.Models;
+using NightVibe.API.Features.Neighborhoods.Models;
 
 namespace NightVibe.API.Features.Venues.Models;
 
@@ -24,4 +25,7 @@ public class Venue
 
         // Navigation property (1 venue has many events)
         public ICollection<Event> Events { get; set; } = new List<Event>();
+
+        public Guid NeighborhoodId { get; set; }
+        public Neighborhood Neighborhood { get; set; }
 }
