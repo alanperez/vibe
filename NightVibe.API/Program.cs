@@ -6,6 +6,8 @@ using NightVibe.API.Features.Events.Repositories;
 using NightVibe.API.Features.Events.Services;
 using NightVibe.API.Features.Venues.Repositories;
 using NightVibe.API.Features.Venues.Services;
+using NightVibe.API.Features.Neighborhoods.Repositories;
+using NightVibe.API.Features.Neighborhoods.Services;
 var builder = WebApplication.CreateBuilder(args);
 
 // Register services
@@ -14,6 +16,8 @@ builder.Services.AddScoped<IEventService, EventService>();
 builder.Services.AddScoped<IEventRepository, EventRepository>();
 builder.Services.AddScoped<IVenueRepository, VenueRepository>();
 builder.Services.AddScoped<IVenueService, VenueService>();
+builder.Services.AddScoped<INeighborhoodService, NeighborhoodService>();
+builder.Services.AddScoped<INeighborhoodRepository, NeighborhoodRepository>();
 // Registers the AppDbContext so EF Core can communicate with SQL Server using the connection string from AppSettings.
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
